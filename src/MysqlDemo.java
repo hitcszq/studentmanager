@@ -32,8 +32,8 @@ public class MysqlDemo extends JFrame implements ActionListener{
 	private JButton lookup=new JButton("查询");
 	
 	
-	private JComboBox jtf_user=new JComboBox();
-	private	JPasswordField jtf_pass=new JPasswordField(); 
+	private JTextField snumber_i=new JTextField();
+	private	JTextField sname_i=new JTextField(); 
 	private JPanel certen=new JPanel(null);
 	private JPanel main_panel;
 	private JLabel top=new JLabel();
@@ -63,7 +63,7 @@ public class MysqlDemo extends JFrame implements ActionListener{
 		
 		setcerten();//设置主界面的主要布局
 		
-		adduser();//记住登录的用户名
+		//adduser();//记住登录的用户名
 	
 		main_panel=new JPanel(new BorderLayout());/*{
 			@Override
@@ -128,7 +128,7 @@ public class MysqlDemo extends JFrame implements ActionListener{
 
 	public void quit(){
 		int flag=0;
-		String mesg="你确定要退出此登录系统？";
+		String mesg="你确定要退出查询系统？";
 		flag=JOptionPane.showConfirmDialog(main_frame,mesg,"提示",JOptionPane.YES_NO_OPTION);	
 		if(flag==JOptionPane.YES_OPTION){
 			System.exit(0);
@@ -157,8 +157,8 @@ public class MysqlDemo extends JFrame implements ActionListener{
 		age_from_i.setBounds(130, 90, 60, 30);
 		age_to.setBounds(200, 95, 60, 20);
 		age_to_i.setBounds(220, 90, 60, 30);
-		jtf_user.setBounds(130,10,150,30);
-		jtf_pass.setBounds(130,50,150,30);
+		snumber_i.setBounds(130,10,150,30);
+		sname_i.setBounds(130,50,150,30);
 		sex.setBounds(80,135,60,20);
 		sex_i.setBounds(130, 130, 90, 30);
 		
@@ -198,8 +198,8 @@ public class MysqlDemo extends JFrame implements ActionListener{
 		certen.add(snumber);
 		//snumber.setForeground(Color.red);
 		
-		certen.add(jtf_user);
-		jtf_user.setEditable(true);
+		certen.add(snumber_i);
+		//sname_i.setEditable(true);
 		certen.add(sname);
 		//sname.setForeground(Color.red);
 		
@@ -208,7 +208,7 @@ public class MysqlDemo extends JFrame implements ActionListener{
 
 		certen.add(snumber_select);
 		certen.add(sname_select);
-		certen.add(jtf_pass);
+		certen.add(sname_i);
 		certen.add(lookup);
 		certen.add(age_from_i);
 		certen.add(age_to_i);
@@ -293,7 +293,7 @@ public class MysqlDemo extends JFrame implements ActionListener{
 	
 		 
 		
-			public void adduser(){
+		/*	public void adduser(){
 					String a_user=String.valueOf(jtf_user.getSelectedItem());
 					String a_pass=String.valueOf(jtf_pass.getPassword());
 					String sql="select j_user from denglu;";
@@ -315,7 +315,7 @@ public class MysqlDemo extends JFrame implements ActionListener{
 						e.printStackTrace();
 					}
 					
-			}//通过查找数据库来实现的记住前四个用户名的功能
+			}//通过查找数据库来实现的记住前四个用户名的功能*/
 				
 	
 	/*		public void getpass(){
@@ -363,8 +363,8 @@ public class MysqlDemo extends JFrame implements ActionListener{
 	
 			
 	public void denglu(){
-		String d_user=String.valueOf(jtf_user.getSelectedItem());	
-		String d_pass=String.valueOf(jtf_pass.getPassword());
+		String d_user=String.valueOf(snumber_i.getText());	
+		String d_pass=String.valueOf(sname_i.getText());
 		String sql="select j_user,j_pass from denglu where j_user=?";
 				
 		if(d_user.equals("")||d_pass.equals("")){
