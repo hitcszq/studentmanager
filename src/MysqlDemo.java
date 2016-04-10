@@ -61,20 +61,9 @@ public class MysqlDemo extends JFrame implements ActionListener{
 		
 		
 		
-		setcerten();//设置主界面的主要布局
-		
-		//adduser();//记住登录的用户名
+		setcerten();
 	
-		main_panel=new JPanel(new BorderLayout());/*{
-			@Override
-			public void paintComponent(Graphics g) {
-				Graphics2D g2=(Graphics2D)g; 
-				super.paintComponents(g);
-				Image image=Toolkit.getDefaultToolkit().getImage("F:\\JavaMedia\\landing2.jpg");
-				g2.drawImage(image,0,0,this.getWidth(),this.getHeight(),this);
-			}
-				};*/
-				//通过重写这个方法设置这个主见的背景图片，有很多实现方法，这是比较简单的方法吧，可以通过查阅api得到。
+		main_panel=new JPanel(new BorderLayout());
 		
 				
 		main_panel.add(top,BorderLayout.NORTH);
@@ -88,12 +77,12 @@ public class MysqlDemo extends JFrame implements ActionListener{
 			//通过设置两个空白面板来调整整个布局的位置
 	
 		main_frame.setContentPane(main_panel);
-		main_frame.setSize(700,400);
+		main_frame.setSize(900,500);
 		
 		Dimension scrp=Toolkit.getDefaultToolkit().getScreenSize();
 		main_frame.setLocation((scrp.width-main_frame.getWidth())/2,(scrp.height-main_frame.getHeight())/2);
 		/*设置它的位置的常用方法吧，先得到它整个屏幕的宽高，然后用这种方法，不管在什么屏幕中都能显示在中间的
-		位置吧*/
+		位置*/
 		
 		main_frame.addWindowListener(new WindowAdapter(){
 			
@@ -114,11 +103,9 @@ public class MysqlDemo extends JFrame implements ActionListener{
 	
 	//@Override
 	public void actionPerformed(ActionEvent e) {
-		/*if(e.getSource()==jb_zhuce){
-			zhuce();
-		}*/
+
 		if(e.getSource()==lookup){
-			denglu();
+			chaxun();
 		}
 		
 	}
@@ -135,22 +122,12 @@ public class MysqlDemo extends JFrame implements ActionListener{
 		}
 			}
 	
-	
-/*	public void itemStateChanged(ItemEvent e){
-		if(e.getSource()==snumber_select){
-			getpass();
-		}
-		
-		if(e.getSource()==sname_select){
-			denglu();
-		}
-		
-	}*/
+
 	
 	
 	
 	public void setcerten(){
-		certen.setOpaque(false);  //这个方法很重要，一定要设置false，才能显示出完整的背景图片
+		certen.setOpaque(false);  
 		snumber.setBounds(80,15,60,20);
 		sname.setBounds(80,55,60,20);
 		age_from.setBounds(80, 95, 60, 20);
@@ -193,7 +170,7 @@ public class MysqlDemo extends JFrame implements ActionListener{
 		sex_select.setBounds(50,130,20,20);
 		certen.add(sex_select);
 		//jb_zhuce.setBounds(230,120,70,30);
-		lookup.setBounds(600,0,80,150);
+		lookup.setBounds(600,0,150,150);
 		
 		certen.add(snumber);
 		//snumber.setForeground(Color.red);
@@ -215,213 +192,95 @@ public class MysqlDemo extends JFrame implements ActionListener{
 		certen.add(age_to);
 		certen.add(sex_i);
 		certen.add(sex);
-		//certen.add(jb_zhuce);
+
 		}
-	//主要的布局程序类
+
 	
-	
-	/*public void zhuce(){
-		String z_user=String.valueOf(jtf_user.getSelectedItem());
-		String z_pass=String.valueOf(jtf_pass.getPassword());
-		String sql;
-		if(z_user.trim().equals("")||z_pass.equals(""))
-		{
-			JOptionPane.showMessageDialog(main_frame,"账号或密码不能为空！！！","提醒",JOptionPane.INFORMATION_MESSAGE);
-		}else
-		{
 			
-			
-			Connection conn=null;
-			PreparedStatement psta=null;
-			ResultSet rs=null;
+	public void chaxun(){
+		String snumber=String.valueOf(snumber_i.getText());	
+		String sname=String.valueOf(sname_i.getText());
+		String age_from=String.valueOf(age_from_i.getText());
+		String age_to=String.valueOf(age_to_i.getText());
+		String sex=String.valueOf(sex_i.getText());
+		String sclass=String.valueOf(classes_i.getText());
+		String sdept=String.valueOf(dept_i.getText());
+		String addr=String.valueOf(addr_i.getText());
+		String sql="select * from students where true";
+		int i=0;		
+     	Connection conn=null;
+		PreparedStatement psta=null;
+		ResultSet rs=null;
 		
-		
-		  try { sql="select j_user from denglu where j_user=?";
-		  	
-				conn=DriverManager.getConnection(url,user,pass);
-				psta=conn.prepareStatement(sql);
-				//prepareStatement比Statement强大啦很多
-				psta.setString(1,z_user);
-				rs=psta.executeQuery();
-				if(rs.next()){
-				JOptionPane.showMessageDialog(main_frame, "该用户已注册，请重新输入用户名！！",
-						"提醒！",JOptionPane.INFORMATION_MESSAGE);
-			}else{
-				 if(z_pass.length()>=6)
-				{sql="insert into denglu(j_user,j_pass) values(?,?)";
-					psta.setString(1,z_user);
-					psta.setString(2,z_pass);
-					conn=DriverManager.getConnection(url,user,pass);
-					psta=conn.prepareStatement(sql);
-					psta.executeUpdate();
-					JOptionPane.showMessageDialog(main_frame,"注册成功，请登录！！！");}
-				 else{
-					 JOptionPane.showMessageDialog(main_frame,"密码须大于六位!!!","提醒!",JOptionPane.INFORMATION_MESSAGE);
-				 }
+		try {
+			conn=DriverManager.getConnection(url,user,pass);
+			Statement stmt=conn.createStatement();
+			if(snumber_select.isSelected())
+				sql =sql+" and snumber="+"'"+snumber+"'";
+			if(sname_select.isSelected())
+				sql =sql+" and sname="+"'"+sname+"'";
+			if(age_select.isSelected()){
+				sql =sql+" and sage >="+age_from;
+				sql =sql+" and sage <="+age_to;
 			}
-		 } catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		 
-		  finally{
-			  try {
-				  if(rs!=null){
-					rs.close();
-					rs=null;}
-				  
-				  if(psta!=null){
-					  psta.close();
-					  psta=null;
-				  }
-				  
-				  if(conn!=null){
-					  conn.close();
-					  conn=null;
-				  }
-				  
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				
-				 
-				   }
-		  }
-		  }
-		  }*/
-	//实现注册功能的类，通过使用insert into语句把数据加入到数据库中，实现注册功能
-	
-		 
+			if(sex_select.isSelected())
+					sql =sql+" and ssex="+"'"+sex+"'";
+			if(classes_select.isSelected())
+				sql =sql+" and sclass="+"'"+sclass+"'";
+			if(dept_select.isSelected())
+				sql =sql+" and sdepth="+"'"+sdept+"'";
+			if(addr_select.isSelected())
+				sql =sql+" and saddr="+"'"+addr+"'";
+			sql=sql+";";
+			System.out.println(sql);
+			rs=stmt.executeQuery(sql);
+			if(rs.wasNull())
+			{
+				JOptionPane.showMessageDialog(main_frame,"查询的结果为空","提醒!!!",JOptionPane.INFORMATION_MESSAGE);
+			}
+			while(rs.next()){
+				JLabel addto=new JLabel("姓名:"+rs.getString(1)+" 学号："+rs.getString(2)+" 年龄："+rs.getString(3)+" 性别："+rs.getString(4)+" 班级："+rs.getString(5)+" 系别："+rs.getString(6)+" 住址："+rs.getString(7));
+				addto.setBounds(80, 175+i,700, 20);
+				certen.add(addto);
+				main_panel.add(certen,BorderLayout.CENTER);
+				main_frame.setContentPane(main_panel);
+				i=i+40;
+			}}
 		
-		/*	public void adduser(){
-					String a_user=String.valueOf(jtf_user.getSelectedItem());
-					String a_pass=String.valueOf(jtf_pass.getPassword());
-					String sql="select j_user from denglu;";
-					
-					try {
-						Connection conn=DriverManager.getConnection(url,user,pass);
-						PreparedStatement sta=conn.prepareStatement(sql);
-						ResultSet rs=sta.executeQuery();
-						rs.afterLast();
-						int i=0;
-						String s=null;
-						while(rs.previous()&&i<4){
-							i++;
-							s=rs.getString("j_user");
-							jtf_user.addItem(s);
-						}
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-			}//通过查找数据库来实现的记住前四个用户名的功能*/
-				
-	
-	/*		public void getpass(){
-				String g_user=String.valueOf(jtf_user.getSelectedItem());
-				String g_pass=String.valueOf(jtf_pass.getPassword());
-				String sql="select j_user,j_pass from denglu where j_user=?";
-				
-				Connection conn=null;
-				PreparedStatement  psta=null;
-				ResultSet	rs=null;
-				try {
-					 conn=DriverManager.getConnection(url,user,pass);
-					 psta=conn.prepareStatement(sql);
-					 psta.setString(1,g_user);
-					 rs=psta.executeQuery();
-					String s=null;
-					while(rs.next()){
-						s=rs.getString("j_pass");
-					}
-					jtf_user.addItem(s);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				finally{
-				try{
-					if(rs!=null){
-					rs.close();
-					rs=null;
-					}
-					
-					
-					if(psta!=null){
-					psta.close();
-					psta=null;}
-				
-					
-					if(conn!=null){
-					conn.close();
-					conn=null;}
-				}catch (SQLException e){
-					e.printStackTrace();}
-				}
-}*/
-	
+		catch (SQLException e) {
 			
-	public void denglu(){
-		String d_user=String.valueOf(snumber_i.getText());	
-		String d_pass=String.valueOf(sname_i.getText());
-		String sql="select j_user,j_pass from denglu where j_user=?";
-				
-		if(d_user.equals("")||d_pass.equals("")){
-			JOptionPane.showMessageDialog(main_frame,"登录密码或账户不能为空!!!!","警告,提醒!!!",JOptionPane.INFORMATION_MESSAGE);
-		}else{		Connection conn=null;
-					PreparedStatement psta=null;
-					ResultSet rs=null;
-					
-					try {
-						conn=DriverManager.getConnection(url,user,pass);
-						psta=conn.prepareStatement(sql);
-						psta.setString(1,d_user);
-						rs=psta.executeQuery();
-						if(rs.next()){
-							if(d_pass.equals(rs.getString(2)))
-							{
-								JOptionPane.showMessageDialog(main_frame,"登录成功");
-								System.exit(0);
-							}else{
-								JOptionPane.showMessageDialog(main_frame,"密码输入错误!!!","提醒!!警告!!!",JOptionPane.ERROR_MESSAGE);
-							}
-							}
-						else{
-								JOptionPane.showMessageDialog(main_frame,"用户名不存在,请重新输入或注册一个账户！！！","提醒!!!",JOptionPane.INFORMATION_MESSAGE);
-							}
-						
-					}
-					catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					finally{
-						try{
-						 if(rs!=null){
-							 rs.close();
-							 rs=null;
-							 }
-						 
-						 if(psta!=null){
-							 psta.close();
-							 psta=null;
-						 }
-						 
-						 if(conn!=null){
-							 conn.close();
-							 conn=null;
-						 }
-						
-						}
-						 
-						  
-						 catch(SQLException e){
-							 e.printStackTrace();
-						 }	}}	}				 		
+			JLabel addto=new JLabel("查询条件错误，性别只能取male或female,年龄只能取1到50");
+			certen.add(addto);
+			main_panel.add(certen,BorderLayout.CENTER);
+			main_frame.setContentPane(main_panel);
+		}
+		finally{
+			try{
+			 if(rs!=null){
+				 rs.close();
+				 rs=null;
+				 }
+			 
+			 if(psta!=null){
+				 psta.close();
+				 psta=null;
+			 }
+			 
+			 if(conn!=null){
+				 conn.close();
+				 conn=null;
+			 }
+			
+			}
+			 
+			  
+			 catch(SQLException e){
+				 e.printStackTrace();
+			 }	
+			}
+		}
+		 		
 								 				
-	
-	
 	
 	public static void main(String[] args) {
 		new MysqlDemo().LandingWindows();
